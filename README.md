@@ -14,6 +14,22 @@ Update your `Package.swift` file.
 import AdminPanelNodesSSO
 ```
 
+Add NodesSSO as SSOProvider when adding AdminPanel.Provider
+
+```
+try drop.addProvider(AdminPanel.Provider(drop: drop, ssoProvider: NodesSSO(droplet: drop)))
+```
+
+Make sure configs are added / setup
+adminpanel.json
+
+```
+"ssoRedirectUrl": "#SSO_REDIRECT_URL",
+"ssoCallbackPath": "#SSO_CALLBACK_PATH",
+"nodesSSOSalt": "#NODES_SSO_SALT"
+```
+(Note these 3 vars will be replaced in deployment)
+
 ###
 Note this package is also used for prototyping features before making PRs to Vapor
 
