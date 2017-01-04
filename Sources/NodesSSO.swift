@@ -3,6 +3,7 @@ import HTTP
 import Vapor
 import Auth
 import BCrypt
+import Random
 import Foundation
 
 public class NodesSSO: SSOProtocol {
@@ -91,7 +92,7 @@ public class NodesSSO: SSOProtocol {
             var newBackendUser: BackendUser = try BackendUser(node: [
                 "name": "Admin",
                 "email": email,
-                "password": BCrypt.hash(password: String.randomAlphaNumericString(8)),
+                "password": BCrypt.hash(password: CryptoRandom.bytes(16).base64String),
                 "role": "super-admin"
                 ])
             
