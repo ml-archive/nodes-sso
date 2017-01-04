@@ -28,6 +28,7 @@ adminpanel.json
 "ssoCallbackPath": "#SSO_CALLBACK_PATH",
 "nodesSSOSalt": "#NODES_SSO_SALT"
 ```
+
 (Note these 3 vars will be replaced in deployment)
 
 ###
