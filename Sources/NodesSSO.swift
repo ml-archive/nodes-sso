@@ -23,7 +23,7 @@ public class NodesSSO: SSOProtocol {
         }
         
         // replace environment
-        self.redirectUrl = redirectUrl.replacingOccurrences(of: "$environment", with: droplet.environment.description)
+        self.redirectUrl = redirectUrl.replacingOccurrences(of: "#environment", with: droplet.environment.description)
         
         
         // Retrieve nodesSSOSalt from config
@@ -70,7 +70,7 @@ public class NodesSSO: SSOProtocol {
         }
         
         // Replace email
-        let generatedToken = nodesSSOSalt.replacingOccurrences(of: "$email", with: email)
+        let generatedToken = nodesSSOSalt.replacingOccurrences(of: "#email", with: email)
         
         // Hash
         let hasher = CryptoHasher(method: .sha256, defaultKey: nil)
