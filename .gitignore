@@ -1,4 +1,10 @@
+Packages
+.build
+.idea
+xcuserdata
+*.xcodeproj
+Config/secrets/
 .DS_Store
-/.build
-/Packages
-/*.xcodeproj
+node_modules/
+bower_components/
+.swift-version
