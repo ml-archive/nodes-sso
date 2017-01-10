@@ -79,7 +79,7 @@ public class NodesSSO: SSOProtocol {
         generatedToken = try hasher.make(generatedToken)
         
         // Check that token match
-        if try generatedToken != token {
+        if generatedToken != token {
             return Response(redirect: "/admin/login").flash(.error, "Token did not match, try again")
         }
         
