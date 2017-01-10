@@ -78,7 +78,7 @@ public class NodesSSO: SSOProtocol {
         
         // Check that token match
         if try hasher.make(generatedToken) != token {
-            return Response(redirect: "/admin/login").flash(.error, "Token did not match")
+            return Response(redirect: "/admin/login").flash(.error, "Token did not match: \(generatedToken) vs \(token)")
         }
         
         var backendUser: BackendUser!
