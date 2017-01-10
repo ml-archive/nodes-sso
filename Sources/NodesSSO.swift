@@ -75,7 +75,7 @@ public class NodesSSO: SSOProtocol {
         
         // Hash
         let hasher = CryptoHasher(method: .sha256, defaultKey: nil)
-        generatedToken = hasher.make(generatedToken)
+        generatedToken = try hasher.make(generatedToken)
         
         // Check that token match
         if try generatedToken != token {
