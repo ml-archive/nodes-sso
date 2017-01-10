@@ -80,7 +80,7 @@ public class NodesSSO: SSOProtocol {
         
         // Check that token match
         if try generatedToken != token {
-            return Response(redirect: "/admin/login").flash(.error, "Token did not match: \(generatedToken) vs \(token)")
+            return Response(redirect: "/admin/login").flash(.error, "Token did not match, try again")
         }
         
         var backendUser: BackendUser!
@@ -109,6 +109,6 @@ public class NodesSSO: SSOProtocol {
         try request.auth.login(Identifier(id: backendUser.id ?? 0))
         
         // Redirect
-        return Response(redirect: "/admin/dashboard").flash(.success, "Logged in as \(backendUser?.email)")
+        return Response(redirect: "/admin/dashboard").flash(.success, "Logged in as \(backendUser!.email)")
     }
 }
