@@ -71,13 +71,14 @@ public class NodesSSO: SSOProtocol {
         }
         
         // Replace email
-        let generatedToken = nodesSSOSalt.replacingOccurrences(of: "#email", with: email)
+        var generatedToken = nodesSSOSalt.replacingOccurrences(of: "#email", with: email)
         
         // Hash
         let hasher = CryptoHasher(method: .sha256, defaultKey: nil)
+        generatedToken = hasher.make(generatedToken)
         
         // Check that token match
-        if try hasher.make(generatedToken) != token {
+        if try generatedToken != token {
             return Response(redirect: "/admin/login").flash(.error, "Token did not match: \(generatedToken) vs \(token)")
         }
         
