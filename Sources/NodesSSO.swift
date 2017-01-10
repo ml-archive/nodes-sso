@@ -5,6 +5,7 @@ import Auth
 import BCrypt
 import Random
 import Foundation
+import Sugar
 
 public class NodesSSO: SSOProtocol {
     let droplet: Droplet
@@ -94,7 +95,9 @@ public class NodesSSO: SSOProtocol {
                 "name": "Admin",
                 "email": email,
                 "password": BCrypt.hash(password: CryptoRandom.bytes(16).base64String),
-                "role": "super-admin"
+                "role": "super-admin",
+                "created_at": Date().toDateTimeString(),
+                "updated_at": Date().toDateTimeString(),
                 ])
             
             try newBackendUser.save()
