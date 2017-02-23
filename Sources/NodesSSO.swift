@@ -94,7 +94,7 @@ public class NodesSSO: SSOProtocol {
             var newBackendUser: BackendUser = try BackendUser(node: [
                 "name": "Admin",
                 "email": email,
-                "password": BCrypt.hash(password: CryptoRandom.bytes(16).base64String),
+                "password": BCrypt.hash(password: CryptoRandom.bytes(16).base64Encoded.string()),
                 "role": "super-admin",
                 "created_at": Date().toDateTimeString(),
                 "updated_at": Date().toDateTimeString(),
