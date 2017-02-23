@@ -31,6 +31,8 @@ adminpanel.json
 
 (Note these 3 vars will be replaced in deployment)
 
+Public the nodes.png into Public/images/
+
 ###
 Note this package is also used for prototyping features before making PRs to Vapor
 
