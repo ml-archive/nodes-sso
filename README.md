@@ -24,9 +24,9 @@ Make sure configs are added / setup
 adminpanel.json
 
 ```
-"ssoRedirectUrl": "#SSO_REDIRECT_URL#",
-"ssoCallbackPath": "#SSO_CALLBACK_PATH#",
-"nodesSSOSalt": "#NODES_SSO_SALT#"
+"ssoRedirectUrl": "$SSO_REDIRECT_URL",
+"ssoCallbackPath": "$SSO_CALLBACK_PATH",
+"nodesSSOSalt": "$NODES_SSO_SALT",
 ```
 
 (Note these 3 vars will be replaced in deployment)
