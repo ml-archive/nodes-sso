@@ -11,6 +11,7 @@ public class NodesSSO: SSOProtocol {
     let droplet: Droplet
     let redirectUrl: String
     let nodesSSOSalt: String
+    let ssoCallbackPath: String
     
     /// Init
     ///
@@ -34,6 +35,13 @@ public class NodesSSO: SSOProtocol {
         }
         
         self.nodesSSOSalt = nodesSSOSalt
+        
+        // Retrieve ssoCallbackPath from config
+        guard let ssoCallbackPath: String = droplet.config["adminpanel", "ssoCallbackPath"]?.string else {
+            throw Abort.custom(status: .internalServerError, message: "NodesSSO missing ssoCallbackPath")
+        }
+        
+        self.ssoCallbackPath = ssoCallbackPath
     }
     
     
@@ -54,8 +62,8 @@ public class NodesSSO: SSOProtocol {
             try request.auth.login(Identifier(id: backendUser.id ?? 0))
             return Response(redirect: "/admin/dashboard").flash(.success, "Logged in as \(backendUser.email)")
         }
-        
-        return Response(redirect: redirectUrl)
+ 
+        return Response(redirect: redirectUrl + "?redirect_url=" + (request.uri.scheme + "://" + request.uri.host + ssoCallbackPath))
     }
     
     
