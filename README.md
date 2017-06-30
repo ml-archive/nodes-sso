@@ -1,14 +1,23 @@
 # Admin Panel Nodes SSO
-[![Language](https://img.shields.io/badge/Swift-3-brightgreen.svg)](http://swift.org)
-[![Build Status](https://api.travis-ci.org/nodes-vapor/admin-panel-nodes-sso.svg?branch=master)](https://travis-ci.org/nodes-vapor/admin-panel-nodes-sso)
+[![Swift Version](https://img.shields.io/badge/Swift-3.1-brightgreen.svg)](http://swift.org)
+[![Vapor Version](https://img.shields.io/badge/Vapor-2-F6CBCA.svg)](http://vapor.codes)
+[![Linux Build Status](https://img.shields.io/circleci/project/github/nodes-vapor/admin-panel-nodes-sso.svg?label=Linux)](https://circleci.com/gh/nodes-vapor/admin-panel-nodes-sso)
+[![macOS Build Status](https://img.shields.io/travis/nodes-vapor/admin-panel-nodes-sso.svg?label=macOS)](https://travis-ci.org/nodes-vapor/admin-panel-nodes-sso)
+[![codebeat badge](https://codebeat.co/badges/52c2f960-625c-4a63-ae63-52a24d747da1)](https://codebeat.co/projects/github-com-nodes-vapor-admin-panel-nodes-sso)
 [![codecov](https://codecov.io/gh/nodes-vapor/admin-panel-nodes-sso/branch/master/graph/badge.svg)](https://codecov.io/gh/nodes-vapor/admin-panel-nodes-sso)
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/nodes-vapor/sugar/master/LICENSE)
+[![Readme Score](http://readme-score-api.herokuapp.com/score.svg?url=https://github.com/nodes-vapor/admin-panel-nodes-sso)](http://clayallsopp.github.io/readme-score?url=https://github.com/nodes-vapor/admin-panel-nodes-sso)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/nodes-vapor/admin-panel-nodes-sso/master/LICENSE)
 
-## Integration
+
+## 📦 Installation
+
 Update your `Package.swift` file.
 ```swift
 .Package(url: "https://github.com/nodes-vapor/admin-panel-nodes-sso.git", majorVersion: 0)
 ```
+
+
+## Getting started 🚀
 
 ```
 import AdminPanelNodesSSO
@@ -33,11 +42,12 @@ adminpanel.json
 
 Public the nodes.png into Public/images/
 
-###
-Note this package is also used for prototyping features before making PRs to Vapor
 
 ## 🏆 Credits
+
 This package is developed and maintained by the Vapor team at [Nodes](https://www.nodes.dk).
+The package owner for this project is [Steffen](https://github.com/steffendsommer).
 
 ## 📄 License
+
 This package is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
