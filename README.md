@@ -19,20 +19,20 @@ Update your `Package.swift` file.
 
 ## Getting started 🚀
 
-```
+```swift
 import AdminPanelNodesSSO
 ```
 
 Add NodesSSO as SSOProvider when adding AdminPanel.Provider
 
-```
+```swift
 try drop.addProvider(AdminPanel.Provider(drop: drop, ssoProvider: NodesSSO(droplet: drop)))
 ```
 
 Make sure configs are added / setup
 adminpanel.json
 
-```
+```swift
 "ssoRedirectUrl": "$SSO_REDIRECT_URL",
 "ssoCallbackPath": "$SSO_CALLBACK_PATH",
 "nodesSSOSalt": "$NODES_SSO_SALT",
