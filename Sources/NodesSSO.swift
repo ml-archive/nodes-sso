@@ -1,47 +1,71 @@
 import AdminPanel
 import HTTP
 import Vapor
-import Auth
+import Authentication
 import BCrypt
 import Random
 import Foundation
 import Sugar
 
 public class NodesSSO: SSOProtocol {
-    let droplet: Droplet
+    let environment: Environment
     let redirectUrl: String
     let nodesSSOSalt: String
     let ssoCallbackPath: String
-    
+
     /// Init
     ///
     /// - Parameter droplet: Droplet
     /// - Throws: Abort.custom for missing configs
     required public init(droplet: Droplet) throws {
-        self.droplet = droplet
-        
+        let config = try NodesSSO.extractConfiguration(config: droplet.config)
+        self.environment = config.environment
+        self.redirectUrl = config.redirectUrl
+        self.nodesSSOSalt = config.nodesSSOSalt
+        self.ssoCallbackPath = config.ssoCallbackPath
+    }
+
+    public init(config: Config) throws {
+        let config = try NodesSSO.extractConfiguration(config: config)
+        self.environment = config.environment
+        self.redirectUrl = config.redirectUrl
+        self.nodesSSOSalt = config.nodesSSOSalt
+        self.ssoCallbackPath = config.ssoCallbackPath
+    }
+
+    private static func extractConfiguration(
+        config: Config
+    ) throws -> (
+        environment: Environment,
+        redirectUrl: String,
+        nodesSSOSalt: String,
+        ssoCallbackPath: String
+    ) {
         // Retrieve ssoRedirectUrl from config
-        guard let redirectUrl: String = droplet.config["adminpanel", "ssoRedirectUrl"]?.string else {
-            throw Abort.custom(status: .internalServerError, message: "NodesSSO missing ssoRedirectUrl")
+        guard let redirectUrl: String = config["adminpanel", "ssoRedirectUrl"]?.string else {
+            throw Abort(.internalServerError, reason: "NodesSSO missing ssoRedirectUrl")
         }
-        
+
         // replace environment
-        self.redirectUrl = redirectUrl.replacingOccurrences(of: "#environment", with: droplet.environment.description)
-        
-        
+        let redirect = redirectUrl.replacingOccurrences(of: "#environment", with: config.environment.description)
+
+
         // Retrieve nodesSSOSalt from config
-        guard let nodesSSOSalt: String = droplet.config["adminpanel", "nodesSSOSalt"]?.string else {
-            throw Abort.custom(status: .internalServerError, message: "NodesSSO missing nodesSSOSalt")
+        guard let nodesSSOSalt: String = config["adminpanel", "nodesSSOSalt"]?.string else {
+            throw Abort(.internalServerError, reason: "NodesSSO missing nodesSSOSalt")
         }
-        
-        self.nodesSSOSalt = nodesSSOSalt
-        
+
+        let salt = nodesSSOSalt
+
         // Retrieve ssoCallbackPath from config
-        guard let ssoCallbackPath: String = droplet.config["adminpanel", "ssoCallbackPath"]?.string else {
-            throw Abort.custom(status: .internalServerError, message: "NodesSSO missing ssoCallbackPath")
+        guard let ssoCallbackPath: String = config["adminpanel", "ssoCallbackPath"]?.string else {
+            throw Abort(.internalServerError, reason: "NodesSSO missing ssoCallbackPath")
         }
-        
-        self.ssoCallbackPath = ssoCallbackPath
+
+        let callback = ssoCallbackPath
+        let env = config.environment
+
+        return (env, redirect, salt, callback)
     }
     
     
@@ -53,17 +77,18 @@ public class NodesSSO: SSOProtocol {
     public func auth(_ request: Request) throws -> Response {
         
         // Local env should just login as first user
-        if droplet.environment.description == "local" || request.uri.host == "0.0.0.0" {
-            guard let backendUser = try BackendUser.query().first() else {
-                throw Abort.custom(status: .internalServerError, message: "Missing a backend user")
+        if environment.description == "local" || request.uri.hostname == "0.0.0.0" {
+            guard let backendUser = try BackendUser.makeQuery().first() else {
+                throw Abort(.internalServerError, reason: "Missing a backend user")
             }
             
             // Login first user and redirect
-            try request.auth.login(Identifier(id: backendUser.id ?? 0))
+
+            try request.auth.authenticate(backendUser.self, persist: false)
             return Response(redirect: "/admin/dashboard").flash(.success, "Logged in as \(backendUser.email)")
         }
  
-        return Response(redirect: redirectUrl + "?redirect_url=" + (request.uri.scheme + "://" + request.uri.host + ssoCallbackPath))
+        return Response(redirect: redirectUrl + "?redirect_url=" + (request.uri.scheme + "://" + request.uri.hostname + ssoCallbackPath))
     }
     
     
@@ -83,8 +108,8 @@ public class NodesSSO: SSOProtocol {
         var generatedToken = nodesSSOSalt.replacingOccurrences(of: "#email", with: email)
         
         // Hash
-        let hasher = CryptoHasher(method: .sha256, defaultKey: nil)
-        generatedToken = try hasher.make(generatedToken)
+        let hasher = CryptoHasher(hash: .sha256, encoding: .hex)
+        generatedToken = try hasher.make(generatedToken).makeString()
         
         // Check that token match
         if generatedToken != token {
@@ -94,15 +119,15 @@ public class NodesSSO: SSOProtocol {
         var backendUser: BackendUser!
         
         // Lookup existing
-        if let existingBackendUser: BackendUser = try BackendUser.query().filter("email", email).first() {
+        if let existingBackendUser: BackendUser = try BackendUser.makeQuery().filter("email", email).first() {
             backendUser = existingBackendUser
         }
             //Create a new
         else {
-            var newBackendUser: BackendUser = try BackendUser(node: [
+            let newBackendUser: BackendUser = try BackendUser(node: [
                 "name": "Admin",
-                "email": email,
-                "password": try BCrypt.digest(password: String.randomAlphaNumericString(16)),
+                "email": email.makeNode(in: nil),
+                "password": try BCrypt.Hash.make(message: String.randomAlphaNumericString(16)).makeString(),
                 "role": "super-admin",
                 "created_at": Date().toDateTimeString(),
                 "updated_at": Date().toDateTimeString(),
@@ -114,7 +139,7 @@ public class NodesSSO: SSOProtocol {
         
         
         // Login
-        try request.auth.login(Identifier(id: backendUser.id ?? 0))
+        try request.auth.authenticate(backendUser.self, persist: false)
         
         // Redirect
         return Response(redirect: "/admin/dashboard").flash(.success, "Logged in as \(backendUser!.email)")
