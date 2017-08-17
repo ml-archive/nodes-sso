@@ -108,7 +108,7 @@ public class NodesSSO: SSOProtocol {
         var generatedToken = nodesSSOSalt.replacingOccurrences(of: "#email", with: email)
         
         // Hash
-        let hasher = CryptoHasher(hash: .sha256, encoding: .base64)
+        let hasher = CryptoHasher(hash: .sha256, encoding: .plain)
         generatedToken = try hasher.make(generatedToken).makeString()
         
         // Check that token match
