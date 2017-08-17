@@ -18,30 +18,54 @@ public class NodesSSO: SSOProtocol {
     /// - Parameter droplet: Droplet
     /// - Throws: Abort.custom for missing configs
     required public init(droplet: Droplet) throws {
+        let config = try NodesSSO.extractConfiguration(config: droplet.config)
+        self.environment = config.environment
+        self.redirectUrl = config.redirectUrl
+        self.nodesSSOSalt = config.nodesSSOSalt
+        self.ssoCallbackPath = config.ssoCallbackPath
+    }
+
+    public init(config: Config) throws {
+        let config = try NodesSSO.extractConfiguration(config: config)
+        self.environment = config.environment
+        self.redirectUrl = config.redirectUrl
+        self.nodesSSOSalt = config.nodesSSOSalt
+        self.ssoCallbackPath = config.ssoCallbackPath
+    }
+
+    private static func extractConfiguration(
+        config: Config
+    ) throws -> (
+        environment: Environment,
+        redirectUrl: String,
+        nodesSSOSalt: String,
+        ssoCallbackPath: String
+    ) {
         // Retrieve ssoRedirectUrl from config
-        guard let redirectUrl: String = droplet.config["adminpanel", "ssoRedirectUrl"]?.string else {
+        guard let redirectUrl: String = config["adminpanel", "ssoRedirectUrl"]?.string else {
             throw Abort(.internalServerError, reason: "NodesSSO missing ssoRedirectUrl")
         }
-        
+
         // replace environment
-        self.redirectUrl = redirectUrl.replacingOccurrences(of: "#environment", with: droplet.config.environment.description)
-        
-        
+        let redirect = redirectUrl.replacingOccurrences(of: "#environment", with: config.environment.description)
+
+
         // Retrieve nodesSSOSalt from config
-        guard let nodesSSOSalt: String = droplet.config["adminpanel", "nodesSSOSalt"]?.string else {
+        guard let nodesSSOSalt: String = config["adminpanel", "nodesSSOSalt"]?.string else {
             throw Abort(.internalServerError, reason: "NodesSSO missing nodesSSOSalt")
         }
-        
-        self.nodesSSOSalt = nodesSSOSalt
-        
+
+        let salt = nodesSSOSalt
+
         // Retrieve ssoCallbackPath from config
-        guard let ssoCallbackPath: String = droplet.config["adminpanel", "ssoCallbackPath"]?.string else {
+        guard let ssoCallbackPath: String = config["adminpanel", "ssoCallbackPath"]?.string else {
             throw Abort(.internalServerError, reason: "NodesSSO missing ssoCallbackPath")
         }
-        
-        self.ssoCallbackPath = ssoCallbackPath
 
-        self.environment = droplet.config.environment
+        let callback = ssoCallbackPath
+        let env = config.environment
+
+        return (env, redirect, salt, callback)
     }
     
     
