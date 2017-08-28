@@ -87,8 +87,9 @@ public class NodesSSO: SSOProtocol {
             try request.auth.authenticate(backendUser.self, persist: false)
             return Response(redirect: "/admin/dashboard").flash(.success, "Logged in as \(backendUser.email)")
         }
- 
-        return Response(redirect: redirectUrl + "?redirect_url=" + (request.uri.scheme + "://" + request.uri.hostname + ssoCallbackPath))
+
+        let scheme = request.peerScheme ?? request.uri.scheme
+        return Response(redirect: redirectUrl + "?redirect_url=" + (scheme + "://" + request.uri.hostname + ssoCallbackPath))
     }
     
     
