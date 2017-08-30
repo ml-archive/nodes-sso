@@ -17,7 +17,7 @@ Update your `Package.swift` file.
 ```
 
 
-## Getting started 🚀
+## 🚀 Getting started
 
 ```swift
 import AdminPanelNodesSSO
@@ -40,6 +40,17 @@ Make sure configs are added to `adminpanel.json`:
 (Note these 3 vars will be replaced in deployment)
 
 The `nodes.png` goes into `Public/images/`.
+
+## 🔧 Configurations
+
+| Key            | Example value                         | Required | Description |
+| -------------- | ------------------------------------- | -------- | ----------- |
+| `redirectUrl`  | `http://provider.com/sso/my-web-site` | Yes      |             |
+| `salt`         | `som3Rand0mS4lt`                      | Yes      |             |
+| `loginPath`    | `/admin/sso/login`                    | No       |             |
+| `callbackPath` | `/admin/sso/callback`                 | No       |             |
+
+
 
 
 ## 🏆 Credits
