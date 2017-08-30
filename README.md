@@ -23,7 +23,7 @@ Update your `Package.swift` file.
 import AdminPanelNodesSSO
 ```
 
-Add NodesSSO as SSOProvider when adding AdminPanel.Provider
+Add NodesSSO as SSOProvider when adding AdminPanel.Provider:
 
 ```swift
 try drop.addProvider(AdminPanel.Provider(drop: drop, ssoProvider: NodesSSO(droplet: drop)))
