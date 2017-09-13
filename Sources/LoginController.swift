@@ -25,7 +25,7 @@ internal final class LoginController {
     internal func auth(req: Request) throws -> Response {
         // skip SSO on local environments
         if environment.isLocalEnvironment || req.uri.hostname.isLocalhost {
-            guard let user = try User.makeQuery().first() else {
+            guard let user = try AdminPanelUser.makeQuery().first() else {
                 throw Abort(.internalServerError, reason: "No backend users exist. Try running `admin-panel:seeder`")
             }
 
@@ -52,11 +52,11 @@ internal final class LoginController {
             return redirect("/admin/login").flash(.error, "Token did not match. Try again")
         }
 
-        let user: User
-        if let existing = try User.makeQuery().filter("email", email).first() {
+        let user: AdminPanelUser
+        if let existing = try AdminPanelUser.makeQuery().filter("email", email).first() {
             user = existing
         } else {
-            user = try User(
+            user = try AdminPanelUser(
                 name: "Admin",
                 title: "Nodes Admin",
                 email: email,
