@@ -24,16 +24,18 @@ internal struct Config {
     internal init(_ config: Vapor.Config) throws {
         let environment = config.environment
 
-        guard let config = config["adminpanel-sso-nodes"] else {
-            throw ConfigError.missingFile("adminpanel-sso-nodes.json")
+        let configFile = "adminpanel-sso-nodes"
+
+        guard let config = config[configFile] else {
+            throw ConfigError.missingFile(configFile)
         }
 
         guard let redirectUrl = config["redirectUrl"]?.string else {
-            throw ConfigError.missing(key: ["redirectUrl"], file: "adminpanel-sso-nodes.json", desiredType: String.self)
+            throw ConfigError.missing(key: ["redirectUrl"], file: configFile, desiredType: String.self)
         }
 
         guard let salt = config["salt"]?.string else {
-            throw ConfigError.missing(key: ["salt"], file: "adminpanel-sso-nodes.json", desiredType: String.self)
+            throw ConfigError.missing(key: ["salt"], file: configFile, desiredType: String.self)
         }
 
         let callbackPath = config["callbackPath"]?.string ?? "/admin/sso/callback"

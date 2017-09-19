@@ -8,7 +8,6 @@
 [![Readme Score](http://readme-score-api.herokuapp.com/score.svg?url=https://github.com/nodes-vapor/admin-panel-nodes-sso)](http://clayallsopp.github.io/readme-score?url=https://github.com/nodes-vapor/admin-panel-nodes-sso)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/nodes-vapor/admin-panel-nodes-sso/master/LICENSE)
 
-
 ## 📦 Installation
 
 Update your `Package.swift` file.
@@ -16,32 +15,23 @@ Update your `Package.swift` file.
 .Package(url: "https://github.com/nodes-vapor/admin-panel-nodes-sso.git", majorVersion: 0)
 ```
 
-
 ## 🚀 Getting started
 
 ```swift
 import AdminPanelNodesSSO
 ```
 
-Add NodesSSO as SSOProvider when adding AdminPanel.Provider:
+Add the Provider:
 
 ```swift
-try drop.addProvider(AdminPanel.Provider(drop: drop, ssoProvider: NodesSSO(droplet: drop)))
+try config.addProvider(AdminPanel.Provider.self)
 ```
-
-Make sure configs are added to `adminpanel.json`:
-
-```json
-"ssoRedirectUrl": "$SSO_REDIRECT_URL",
-"ssoCallbackPath": "$SSO_CALLBACK_PATH",
-"nodesSSOSalt": "$NODES_SSO_SALT",
-```
-
-(Note these 3 vars will be replaced in deployment)
 
 The `nodes.png` goes into `Public/images/`.
 
 ## 🔧 Configurations
+
+Make sure configs are added to `adminpanel-sso-nodes.json`:
 
 | Key            | Example value                         | Required | Description |
 | -------------- | ------------------------------------- | -------- | ----------- |
@@ -49,9 +39,6 @@ The `nodes.png` goes into `Public/images/`.
 | `salt`         | `som3Rand0mS4lt`                      | Yes      |             |
 | `loginPath`    | `/admin/sso/login`                    | No       |             |
 | `callbackPath` | `/admin/sso/callback`                 | No       |             |
-
-
-
 
 ## 🏆 Credits
 
