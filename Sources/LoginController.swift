@@ -33,7 +33,9 @@ internal final class LoginController {
             return redirect("/admin/dashboard").flash(.success, "Logged in as \(user.email)")
         }
 
-        let resultingPath = req.uri.scheme + "://" + req.uri.hostname + callbackPath
+        let scheme = req.peerScheme ?? req.uri.scheme
+
+        let resultingPath = scheme + "://" + req.uri.hostname + callbackPath
         return redirect(redirectUrl + "?redirect_url=" + resultingPath)
     }
 
