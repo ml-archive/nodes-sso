@@ -1,8 +1,12 @@
 import Vapor
 
+/// Middleware to expose SSO config.
 internal final class ConfigMiddleware: Middleware {
     private let loginPath: String
 
+    /// Initializes the middleware to expose SSO config.
+    ///
+    /// - Parameter loginPath: The login path to start the SSO flow.
     internal init(loginPath: String) {
         self.loginPath = loginPath
     }

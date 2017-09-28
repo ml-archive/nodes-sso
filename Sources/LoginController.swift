@@ -1,6 +1,7 @@
 import Vapor
 import AdminPanelProvider
 
+/// Takes care og controlling the SSO flow.
 internal final class LoginController {
     private let environment: Environment
     private let hasher: CryptoHasher
@@ -8,6 +9,14 @@ internal final class LoginController {
     private let callbackPath: String
     private let redirectUrl: String
 
+    /// Initializes the controller for handling the SSO flow.
+    ///
+    /// - Parameters:
+    ///   - environment: Current environment.
+    ///   - hasher: Hasher for generating SSO token.
+    ///   - salt: Salt for the hasher
+    ///   - callbackPath: Path to finish the SSO flow.
+    ///   - redirectUrl: External link to SSO.
     internal init(
         environment: Environment,
         hasher: CryptoHasher,
@@ -22,6 +31,11 @@ internal final class LoginController {
         self.redirectUrl = redirectUrl
     }
 
+    /// Start the SSO flow.
+    ///
+    /// - Parameter req: Current request.
+    /// - Returns: A redirect to the external SSO url.
+    /// - Throws: If no backend user has been created on local environment.
     internal func auth(req: Request) throws -> Response {
         // skip SSO on local environments
         if environment.isLocalEnvironment || req.uri.hostname.isLocalhost {
@@ -39,6 +53,11 @@ internal final class LoginController {
         return redirect(redirectUrl + "?redirect_url=" + resultingPath)
     }
 
+    /// Finishes the SSO flow.
+    ///
+    /// - Parameter req: Current request.
+    /// - Returns: A redirect to the dashboard after the user has been logged in.
+    /// - Throws: If hashing or saving a new user fails.
     internal func callback(req: Request) throws -> ResponseRepresentable {
         guard
             let token = req.data["token"]?.string,
@@ -76,14 +95,14 @@ internal final class LoginController {
     }
 }
 
-internal extension Environment {
-    internal var isLocalEnvironment: Bool {
+fileprivate extension Environment {
+    fileprivate var isLocalEnvironment: Bool {
         return self == Environment.custom("local")
     }
 }
 
-internal extension String {
-    internal var isLocalhost: Bool {
+fileprivate extension String {
+    fileprivate var isLocalhost: Bool {
          return self == "0.0.0.0" || self == "127.0.0.1"
     }
 }
