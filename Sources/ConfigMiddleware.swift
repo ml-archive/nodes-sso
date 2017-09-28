@@ -11,16 +11,12 @@ internal final class ConfigMiddleware: Middleware {
         to request: Request,
         chainingTo next: Responder
     ) throws -> Response {
-        guard
-            var adminPanel = request.storage["adminPanel"] as? Node,
-            var sso = adminPanel["sso"]?.object
-        else {
-            throw Abort(.badGateway)
-        }
+        var updatedConfig = request.storage["adminPanel"] as? Node ?? Node([:])
+        var updatedSSOConfig = updatedConfig["sso"] ?? Node([:])
 
-        sso["nodes"] = try Node(node: ["loginPath": loginPath])
-        adminPanel["sso"] = Node(sso)
-        request.storage["adminPanel"] = adminPanel
+        updatedSSOConfig["nodes"] = try Node(node: ["loginPath": loginPath])
+        updatedConfig["sso"] = updatedSSOConfig
+        request.storage["adminPanel"] = updatedConfig
         return try next.respond(to: request)
     }
 }
