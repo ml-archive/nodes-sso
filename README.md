@@ -12,7 +12,7 @@
 
 Update your `Package.swift` file.
 ```swift
-.Package(url: "https://github.com/nodes-vapor/admin-panel-nodes-sso.git", majorVersion: 0)
+.Package(url: "https://github.com/nodes-vapor/admin-panel-nodes-sso.git", majorVersion: 0, minorVersion: 4)
 ```
 
 ## 🚀 Getting started
@@ -24,7 +24,7 @@ import AdminPanelNodesSSO
 Add the Provider:
 
 ```swift
-try config.addProvider(AdminPanel.Provider.self)
+try addProvider(AdminPanelNodesSSO.Provider.self)
 ```
 
 The `nodes.png` goes into `Public/images/`.
@@ -33,12 +33,12 @@ The `nodes.png` goes into `Public/images/`.
 
 Make sure configs are added to `adminpanel-sso-nodes.json`:
 
-| Key            | Example value                         | Required | Description |
-| -------------- | ------------------------------------- | -------- | ----------- |
-| `redirectUrl`  | `http://provider.com/sso/my-web-site` | Yes      |             |
-| `salt`         | `som3Rand0mS4lt`                      | Yes      |             |
-| `loginPath`    | `/admin/sso/login`                    | No       |             |
-| `callbackPath` | `/admin/sso/callback`                 | No       |             |
+| Key            | Example value                         | Required | Description                              |
+| -------------- | ------------------------------------- | -------- | ---------------------------------------- |
+| `redirectUrl`  | `http://provider.com/sso/my-web-site` | Yes      | The url used for opening up the SSO login. |
+| `salt`         | `som3Rand0mS4lt`                      | Yes      | The salt to use for the hasher.          |
+| `loginPath`    | `/admin/sso/login`                    | No       | The project path to start the SSO flow.  |
+| `callbackPath` | `/admin/sso/callback`                 | No       | The project path after user has logged in using SSO. |
 
 ## 🏆 Credits
 
