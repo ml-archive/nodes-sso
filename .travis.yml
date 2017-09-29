@@ -10,7 +10,7 @@ before_install:
   brew update;
   brew install vapor;
   brew install cmysql;
-  gem install xcpretty
+  gem install xcpretty;
 
 script:
   - swift build
