@@ -8,39 +8,37 @@
 [![Readme Score](http://readme-score-api.herokuapp.com/score.svg?url=https://github.com/nodes-vapor/admin-panel-nodes-sso)](http://clayallsopp.github.io/readme-score?url=https://github.com/nodes-vapor/admin-panel-nodes-sso)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/nodes-vapor/admin-panel-nodes-sso/master/LICENSE)
 
-
 ## 📦 Installation
 
 Update your `Package.swift` file.
 ```swift
-.Package(url: "https://github.com/nodes-vapor/admin-panel-nodes-sso.git", majorVersion: 0)
+.Package(url: "https://github.com/nodes-vapor/admin-panel-nodes-sso.git", majorVersion: 0, minorVersion: 4)
 ```
 
-
-## Getting started 🚀
+## 🚀 Getting started
 
 ```swift
 import AdminPanelNodesSSO
 ```
 
-Add NodesSSO as SSOProvider when adding AdminPanel.Provider
+Add the Provider:
 
 ```swift
-try drop.addProvider(AdminPanel.Provider(drop: drop, ssoProvider: NodesSSO(droplet: drop)))
+try addProvider(AdminPanelNodesSSO.Provider.self)
 ```
-
-Make sure configs are added to `adminpanel.json`:
-
-```json
-"ssoRedirectUrl": "$SSO_REDIRECT_URL",
-"ssoCallbackPath": "$SSO_CALLBACK_PATH",
-"nodesSSOSalt": "$NODES_SSO_SALT",
-```
-
-(Note these 3 vars will be replaced in deployment)
 
 The `nodes.png` goes into `Public/images/`.
 
+## 🔧 Configurations
+
+Make sure configs are added to `adminpanel-sso-nodes.json`:
+
+| Key            | Example value                         | Required | Description                              |
+| -------------- | ------------------------------------- | -------- | ---------------------------------------- |
+| `redirectUrl`  | `http://provider.com/sso/my-web-site` | Yes      | The url used for opening up the SSO login. |
+| `salt`         | `som3Rand0mS4lt`                      | Yes      | The salt to use for the hasher.          |
+| `loginPath`    | `/admin/sso/login`                    | No       | The project path to start the SSO flow.  |
+| `callbackPath` | `/admin/sso/callback`                 | No       | The project path after user has logged in using SSO. |
 
 ## 🏆 Credits
 
