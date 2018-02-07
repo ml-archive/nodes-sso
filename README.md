@@ -11,7 +11,7 @@
 
 Update your `Package.swift` file.
 ```swift
-.Package(url: "https://github.com/nodes-vapor/admin-panel-nodes-sso.git", majorVersion: 0, minorVersion: 4)
+.Package(url: "https://github.com/nodes-vapor/admin-panel-nodes-sso.git", majorVersion: 0, minor: 4)
 ```
 
 ## 🚀 Getting started
