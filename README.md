@@ -15,7 +15,7 @@ Update your `Package.swift` file.
 ```
 
 ### Install resources
-Copy the `sso-button.leaf` file from `Resources/Views/AdminPanel/Login/` from this repo into your project into the same directory. You can download this repo as a zip and then move the file into the mentioned directory. Remember to check that you're not overwriting any files in your project.
+Copy the `sso-button.leaf` file from `Resources/Views/AdminPanel/Login/` and the `nodes.png` from `Public/images/` from this repo into your project into the same directories. You can download this repo as a zip and then move the files into the mentioned directories. Remember to check that you're not overwriting any files in your project.
 
 ## 🚀 Getting started
 
