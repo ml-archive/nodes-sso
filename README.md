@@ -14,13 +14,16 @@ Update your `Package.swift` file.
 .Package(url: "https://github.com/nodes-vapor/admin-panel-nodes-sso.git", majorVersion: 0, minor: 4)
 ```
 
+### Install resources
+Copy the `sso-button.leaf` file from `Resources/Views/AdminPanel/Login/` from this repo into your project into the same directory. You can download this repo as a zip and then move the file into the mentioned directory. Remember to check that you're not overwriting any files in your project.
+
 ## 🚀 Getting started
 
 ```swift
 import AdminPanelNodesSSO
 ```
 
-Add the Provider:
+### Add the Provider
 
 ```swift
 try addProvider(AdminPanelNodesSSO.Provider.self)
