@@ -103,6 +103,6 @@ fileprivate extension Environment {
 
 fileprivate extension String {
     fileprivate var isLocalhost: Bool {
-         return self == "0.0.0.0" || self == "127.0.0.1"
+         return self == "0.0.0.0" || self == "127.0.0.1" || self == "localhost"
     }
 }
