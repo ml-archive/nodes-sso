@@ -10,8 +10,29 @@
 ## 📦 Installation
 
 Update your `Package.swift` file.
+
+#### Swift 3
+
 ```swift
 .Package(url: "https://github.com/nodes-vapor/admin-panel-nodes-sso.git", majorVersion: 0, minor: 4)
+```
+
+#### Swift 4
+
+```swift
+.package(url: "https://github.com/nodes-vapor/admin-panel-nodes-sso.git", .upToNextMinor(from: "0.4.3")),
+```
+```swift
+targets: [
+    .target(
+        name: "App",
+        dependencies: [
+            ...
+            "AdminPanelNodesSSO"
+        ]
+    ),
+    ...
+]
 ```
 
 ### Install resources
