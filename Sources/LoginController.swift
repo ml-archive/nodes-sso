@@ -1,7 +1,7 @@
 import Vapor
 import AdminPanelProvider
 
-/// Takes care og controlling the SSO flow.
+/// Takes care of controlling the SSO flow.
 internal final class LoginController {
     private let environment: Environment
     private let hasher: CryptoHasher
