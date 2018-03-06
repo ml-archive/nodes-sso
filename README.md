@@ -29,7 +29,11 @@ import AdminPanelNodesSSO
 try addProvider(AdminPanelNodesSSO.Provider.self)
 ```
 
-The `nodes.png` goes into `Public/images/`.
+### Embed the Button
+Within `index.leaf` in your `Resources/Views/AdminPanel/Login/` insert right after the opening `<body>` tag:
+```
+#embed("AdminPanel/Login/sso-button")
+```
 
 ## 🔧 Configurations
 
