@@ -1,7 +1,7 @@
 import Vapor
 import AdminPanelProvider
 
-/// Takes care og controlling the SSO flow.
+/// Takes care of controlling the SSO flow.
 internal final class LoginController {
     private let environment: Environment
     private let hasher: CryptoHasher
@@ -103,6 +103,6 @@ fileprivate extension Environment {
 
 fileprivate extension String {
     fileprivate var isLocalhost: Bool {
-         return self == "0.0.0.0" || self == "127.0.0.1"
+         return self == "0.0.0.0" || self == "127.0.0.1" || self == "localhost"
     }
 }
