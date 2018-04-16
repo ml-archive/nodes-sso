@@ -43,7 +43,7 @@ internal final class LoginController {
                 throw Abort(.internalServerError, reason: "No backend users exist. Try running `admin-panel:seeder`")
             }
 
-            req.auth.authenticate(user)
+            try req.auth.authenticate(user, persist: true)
             return redirect("/admin/dashboard").flash(.success, "Logged in as \(user.email)")
         }
 
@@ -90,7 +90,7 @@ internal final class LoginController {
             try user.save()
         }
 
-        req.auth.authenticate(user)
+        try req.auth.authenticate(user, persist: true)
         return redirect("/admin/dashboard").flash(.success, "Logged in as \(user.email)")
     }
 }
