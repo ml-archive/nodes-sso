@@ -1,10 +1,8 @@
 import Vapor
 import AdminPanelProvider
 
-typealias LoginController = CustomUserLoginController<AdminPanelUser>
-
 /// Takes care of controlling the SSO flow.
-internal final class CustomUserLoginController<U: AdminPanelUserType> {
+internal final class LoginController<U: AdminPanelUserType> {
     private let environment: Environment
     private let hasher: CryptoHasher
     private let salt: String

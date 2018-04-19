@@ -1,8 +1,12 @@
 import Vapor
 import AdminPanelProvider
 
-public final class Provider: Vapor.Provider {
-    public static let repositoryName = "nodes-vapor/admin-panel-sso-nodes-provider"
+public typealias Provider = AdminPanelNodesSSO.CustomUserProvider<AdminPanelUser>
+
+public final class CustomUserProvider<U: AdminPanelUserType>: Vapor.Provider {
+    public static var repositoryName: String {
+        return "nodes-vapor/admin-panel-sso-nodes-provider"
+    }
     private var config: AdminPanelNodesSSO.Config!
 
     public init() {}
@@ -20,14 +24,14 @@ public final class Provider: Vapor.Provider {
 
     public func boot(_ droplet: Droplet) throws {
         let hasher = CryptoHasher(hash: .sha256, encoding: .hex)
-        let controller = LoginController(
+        let controller = LoginController<U>(
             environment: config.environment,
             hasher: hasher,
             salt: config.salt,
             callbackPath: config.callbackPath,
             redirectUrl: config.redirectUrl
         )
-        let ssoRoutes = LoginRoutes(
+        let ssoRoutes = LoginRoutes<U>(
             loginPath: config.loginPath,
             callbackPath: config.callbackPath,
             controller: controller
