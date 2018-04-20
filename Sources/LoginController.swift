@@ -77,15 +77,7 @@ internal final class LoginController<U: AdminPanelUserType> {
         if let existing = try U.makeQuery().filter(U.emailKey, email).first() {
             user = existing
         } else {
-            user = try U(
-                name: "Admin",
-                title: "Nodes Admin",
-                email: email,
-                password: String.random(16),
-                role: "Super Admin",
-                shouldResetPassword: false,
-                avatar: nil
-            )
+            user = try U.makeSSOUser(withEmail: email)
 
             try user.save()
         }
