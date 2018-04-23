@@ -3,7 +3,7 @@ import AdminPanelProvider
 
 public typealias Provider = AdminPanelNodesSSO.CustomUserProvider<AdminPanelUser>
 
-public final class CustomUserProvider<U: AdminPanelUserType>: Vapor.Provider {
+public final class CustomUserProvider<U: AdminPanelUserType & SSOUserType>: Vapor.Provider {
     public static var repositoryName: String {
         return "nodes-vapor/admin-panel-sso-nodes-provider"
     }
