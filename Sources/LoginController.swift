@@ -2,7 +2,7 @@ import Vapor
 import AdminPanelProvider
 
 /// Takes care of controlling the SSO flow.
-internal final class LoginController {
+internal final class LoginController<U: AdminPanelUserType & SSOUserType> {
     private let environment: Environment
     private let hasher: CryptoHasher
     private let salt: String
@@ -39,7 +39,7 @@ internal final class LoginController {
     internal func auth(req: Request) throws -> Response {
         // skip SSO on local environments
         if environment.isLocalEnvironment || req.uri.hostname.isLocalhost {
-            guard let user = try AdminPanelUser.makeQuery().first() else {
+            guard let user = try U.makeQuery().first() else {
                 throw Abort(.internalServerError, reason: "No backend users exist. Try running `admin-panel:seeder`")
             }
 
@@ -73,19 +73,11 @@ internal final class LoginController {
             return redirect("/admin/login").flash(.error, "Token did not match. Try again")
         }
 
-        let user: AdminPanelUser
-        if let existing = try AdminPanelUser.makeQuery().filter("email", email).first() {
+        let user: U
+        if let existing = try U.makeQuery().filter(U.emailKey, email).first() {
             user = existing
         } else {
-            user = try AdminPanelUser(
-                name: "Admin",
-                title: "Nodes Admin",
-                email: email,
-                password: String.random(16),
-                role: "Super Admin",
-                shouldResetPassword: false,
-                avatar: nil
-            )
+            user = try U.makeSSOUser(withEmail: email)
 
             try user.save()
         }

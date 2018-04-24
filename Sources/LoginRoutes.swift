@@ -3,10 +3,10 @@ import HTTP
 import AdminPanelProvider
 
 /// Routes for handling SSO.
-internal final class LoginRoutes: RouteCollection {
+internal final class LoginRoutes<U: AdminPanelUserType & SSOUserType>: RouteCollection {
     private let loginPath: String
     private let callbackPath: String
-    private let controller: LoginController
+    private let controller: LoginController<U>
 
     /// Initializes the login routes.
     ///
@@ -17,7 +17,7 @@ internal final class LoginRoutes: RouteCollection {
     internal init(
         loginPath: String,
         callbackPath: String,
-        controller: LoginController
+        controller: LoginController<U>
     ) {
         self.loginPath = loginPath
         self.callbackPath = callbackPath
