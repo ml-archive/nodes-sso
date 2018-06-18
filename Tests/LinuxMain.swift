@@ -1,6 +1,6 @@
 import XCTest
-@testable import AdminPanelNodesSSOTests
+@testable import NodesSSOTests
 
 XCTMain([
-     testCase(AdminPanelNodesSSOTests.allTests),
+     testCase(NodesSSOTests.allTests),
 ])

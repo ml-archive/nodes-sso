@@ -1,9 +1,17 @@
+// swift-tools-version:4.0
 import PackageDescription
 
 let package = Package(
-    name: "AdminPanelNodesSSO",
+    name: "NodesSSO",
+    products: [
+        .library(name: "NodesSSO", targets: ["NodesSSO"]),
+    ],
     dependencies: [
-        .Package(url: "https://github.com/vapor/vapor.git", majorVersion: 2),
-        .Package(url: "https://github.com/nodes-vapor/admin-panel-provider.git", majorVersion: 0, minor: 5)
+        .package(url: "https://github.com/vapor/vapor.git", from: "3.0.0"),
+        .package(url: "https://github.com/nodes-vapor/admin-panel.git", .branch("vapor-3")),
+    ],
+    targets: [
+        .target(name: "NodesSSO", dependencies: ["Vapor", "AdminPanel"]),
+        .testTarget(name: "NodesSSOTests", dependencies: ["NodesSSO"]),
     ]
 )
