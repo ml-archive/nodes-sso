@@ -6,7 +6,9 @@ internal extension NodesSSOProvider {
         config: NodesSSOConfig,
         controller: NodesSSOController<U>
     ) {
-        router.get(config.loginPath, use: controller.auth)
-        router.post(config.callbackPath, use: controller.callback)
+        router.group(config.middlewares) { group in
+            group.get(config.loginPath, use: controller.auth)
+            group.post(config.callbackPath, use: controller.callback)
+        }
     }
 }
