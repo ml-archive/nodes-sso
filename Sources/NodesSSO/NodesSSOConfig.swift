@@ -9,7 +9,7 @@ public struct NodesSSOConfig: Service {
 
     public init(
         projectURL: String,
-        loginPath: String = "/admin/",
+        loginPath: String,
         redirectURL: String,
         callbackPath: String,
         salt: String

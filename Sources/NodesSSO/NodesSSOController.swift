@@ -8,7 +8,7 @@ public protocol NodesSSOAuthenticatable {
 internal final class NodesSSOController<U: NodesSSOAuthenticatable> {
     internal func auth(_ req: Request) throws -> Response {
         let config: NodesSSOConfig = try req.make()
-        let url = config.redirectURL + "?redirect_url=" + config.projectURL + "/" + config.callbackPath
+        let url = config.redirectURL + "?redirect_url=" + config.projectURL + config.callbackPath
         return req.redirect(to: url)
     }
 
