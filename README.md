@@ -1,6 +1,6 @@
-# Admin Panel Nodes SSO 🔑
+# Nodes SSO 🔑
 [![Swift Version](https://img.shields.io/badge/Swift-4.1-brightgreen.svg)](http://swift.org)
-[![Vapor Version](https://img.shields.io/badge/Vapor-2-F6CBCA.svg)](http://vapor.codes)
+[![Vapor Version](https://img.shields.io/badge/Vapor-3-30B6FC.svg)](http://vapor.codes)
 [![Circle CI](https://circleci.com/gh/nodes-vapor/sugar/tree/master.svg?style=shield)](https://circleci.com/gh/nodes-vapor/sugar)
 [![codebeat badge](https://codebeat.co/badges/fa667bac-85c1-4776-aaef-fdfea294e2c9)](https://codebeat.co/projects/github-com-nodes-vapor-admin-panel-nodes-sso-master)
 [![codecov](https://codecov.io/gh/nodes-vapor/admin-panel-nodes-sso/branch/master/graph/badge.svg)](https://codecov.io/gh/nodes-vapor/admin-panel-nodes-sso)
@@ -12,7 +12,7 @@
 Update your `Package.swift` file.
 
 ```swift
-.package(url: "https://github.com/nodes-vapor/admin-panel-nodes-sso.git", .upToNextMinor(from: "0.6.0")),
+.package(url: "https://github.com/nodes-vapor/nodes-sso.git", from: "1.0.0-beta")
 ```
 ```swift
 targets: [
@@ -20,7 +20,7 @@ targets: [
         name: "App",
         dependencies: [
             ...
-            "AdminPanelNodesSSO"
+            "NodesSSO"
         ]
     ),
     ...
@@ -28,36 +28,24 @@ targets: [
 ```
 
 ### Install resources
-Copy the `sso-button.leaf` file from `Resources/Views/AdminPanel/Login/` and the `nodes.png` from `Public/images/` from this repo into your project into the same directories. You can download this repo as a zip and then move the files into the mentioned directories. Remember to check that you're not overwriting any files in your project.
+Copy the `NodesSSO` folders from `Resources/Views` and `Public` from this repo and paste them into your project into the same directories. You can download this repo as a zip and then move the files into the mentioned directories.
 
 ## 🚀 Getting started
 
 ```swift
-import AdminPanelNodesSSO
+import NodesSSO
 ```
 
 ### Add the Provider
 
-```swift
-try addProvider(AdminPanelNodesSSO.Provider.self)
-```
+TODO
 
 ### Embed the Button
-Within `index.leaf` in your `Resources/Views/AdminPanel/Login/` insert right after the opening `<body>` tag:
+On the page you want the NodesSSO button to appear, embed the `sso-button` leaf file:
+
 ```
-#embed("AdminPanel/Login/sso-button")
+#embed("NodesSSO/sso-button")
 ```
-
-## 🔧 Configurations
-
-Make sure configs are added to `adminpanel-sso-nodes.json`:
-
-| Key            | Example value                         | Required | Description                              |
-| -------------- | ------------------------------------- | -------- | ---------------------------------------- |
-| `redirectUrl`  | `http://provider.com/sso/my-web-site` | Yes      | The url used for opening up the SSO login. |
-| `salt`         | `som3Rand0mS4lt`                      | Yes      | The salt to use for the hasher.          |
-| `loginPath`    | `/admin/sso/login`                    | No       | The project path to start the SSO flow.  |
-| `callbackPath` | `/admin/sso/callback`                 | No       | The project path after user has logged in using SSO. |
 
 ## 🏆 Credits
 
