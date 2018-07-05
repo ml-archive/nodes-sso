@@ -1,8 +1,14 @@
 import Crypto
 import Vapor
 
+public struct AuthenticatedUser {
+    public let email: String
+    public let name: String
+    public let imageUrl: String
+}
+
 public protocol NodesSSOAuthenticatable {
-    static func authenticated(username: String, req: Request) -> Future<Response>
+    static func authenticated(_ user: AuthenticatedUser, req: Request) -> Future<Response>
 }
 
 internal final class NodesSSOController<U: NodesSSOAuthenticatable> {
@@ -27,7 +33,12 @@ internal final class NodesSSOController<U: NodesSSOAuthenticatable> {
                 }
             }
             .flatMap(to: Response.self) { callback in
-                U.authenticated(username: callback.email, req: req)
+                let user = AuthenticatedUser(
+                    email: callback.email,
+                    name: callback.name,
+                    imageUrl: callback.image
+                )
+                return U.authenticated(user, req: req)
             }
     }
 }
@@ -36,5 +47,7 @@ private extension NodesSSOController {
     struct Callback: Codable {
         let token: String
         let email: String
+        let name: String
+        let image: String
     }
 }
