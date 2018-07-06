@@ -7,6 +7,8 @@ public struct NodesSSOConfig: Service {
     let callbackPath: String
     let salt: String
     let middlewares: [Middleware]
+    let environment: Environment
+    let skipSSO: Bool
 
     public init(
         projectURL: String,
@@ -14,7 +16,9 @@ public struct NodesSSOConfig: Service {
         redirectURL: String,
         callbackPath: String,
         salt: String,
-        middlewares: [Middleware] = []
+        middlewares: [Middleware] = [],
+        environment: Environment,
+        skipSSO: Bool = false
     ) {
         self.projectURL = projectURL
         self.loginPath = loginPath
@@ -22,5 +26,7 @@ public struct NodesSSOConfig: Service {
         self.callbackPath = callbackPath
         self.salt = salt
         self.middlewares = middlewares
+        self.environment = environment
+        self.skipSSO = skipSSO
     }
 }
