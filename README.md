@@ -1,6 +1,6 @@
-# Admin Panel Nodes SSO 🔑
+# Nodes SSO 🔑
 [![Swift Version](https://img.shields.io/badge/Swift-4.1-brightgreen.svg)](http://swift.org)
-[![Vapor Version](https://img.shields.io/badge/Vapor-2-F6CBCA.svg)](http://vapor.codes)
+[![Vapor Version](https://img.shields.io/badge/Vapor-3-30B6FC.svg)](http://vapor.codes)
 [![Circle CI](https://circleci.com/gh/nodes-vapor/sugar/tree/master.svg?style=shield)](https://circleci.com/gh/nodes-vapor/sugar)
 [![codebeat badge](https://codebeat.co/badges/fa667bac-85c1-4776-aaef-fdfea294e2c9)](https://codebeat.co/projects/github-com-nodes-vapor-admin-panel-nodes-sso-master)
 [![codecov](https://codecov.io/gh/nodes-vapor/admin-panel-nodes-sso/branch/master/graph/badge.svg)](https://codecov.io/gh/nodes-vapor/admin-panel-nodes-sso)
@@ -12,7 +12,7 @@
 Update your `Package.swift` file.
 
 ```swift
-.package(url: "https://github.com/nodes-vapor/admin-panel-nodes-sso.git", .upToNextMinor(from: "0.6.0")),
+.package(url: "https://github.com/nodes-vapor/nodes-sso.git", from: "1.0.0-beta")
 ```
 ```swift
 targets: [
@@ -20,7 +20,7 @@ targets: [
         name: "App",
         dependencies: [
             ...
-            "AdminPanelNodesSSO"
+            "NodesSSO"
         ]
     ),
     ...
@@ -28,36 +28,65 @@ targets: [
 ```
 
 ### Install resources
-Copy the `sso-button.leaf` file from `Resources/Views/AdminPanel/Login/` and the `nodes.png` from `Public/images/` from this repo into your project into the same directories. You can download this repo as a zip and then move the files into the mentioned directories. Remember to check that you're not overwriting any files in your project.
+Copy the `NodesSSO` folders from `Resources/Views` and `Public` from this repo and paste them into your project into the same directories. You can download this repo as a zip and then move the files into the mentioned directories.
 
 ## 🚀 Getting started
 
 ```swift
-import AdminPanelNodesSSO
+import NodesSSO
 ```
 
-### Add the Provider
+### Adding the provider
 
 ```swift
-try addProvider(AdminPanelNodesSSO.Provider.self)
+public func configure(_ config: inout Config, _ env: inout Environment, _ services: inout Services) throws {
+    try services.register(NodesSSOProvider<AdminPanelUser>(config: NodesSSOConfig(
+        projectURL: "https://myproject.com",
+        redirectURL: "https://url-for-sso.com",
+        salt: "MY-SECRET-HASH-FOR-SSO",
+        environment: env
+    )))
+}
 ```
 
-### Embed the Button
-Within `index.leaf` in your `Resources/Views/AdminPanel/Login/` insert right after the opening `<body>` tag:
+There are also parameters for setting the routes that should enable SSO in your project. Have a look at the signature of `NodesSSOConfig` for more information.
+
+### Adding the Leaf tag
+
+#### Using a shared Leaf tag config
+
+This package supports using a shared Leaf tag config which removes the task of registering the tags from the consumer of this package. Please see [this description](https://github.com/nodes-vapor/sugar#mutable-leaf-tag-config) if you want to use this.
+
+#### Manually registering the Leaf tag(s)
+
+In order to render embed the SSO button, you will need to add the NodesSSO Leaf tag:
+
+```swift
+public func configure(_ config: inout Config, _ env: inout Environment, _ services: inout Services) throws {
+    services.register { _ -> LeafTagConfig in
+        var tags = LeafTagConfig.default()
+        tags.use(NodesSSOConfigTag(), as: "nodessso:config")
+        return tags
+    }
+}
 ```
-#embed("AdminPanel/Login/sso-button")
+
+### Embedding the SSO button
+On the page you want the NodesSSO button to appear, embed the `sso-button` leaf file:
+
+```
+#embed("NodesSSO/sso-button")
 ```
 
-## 🔧 Configurations
+## Conforming to `NodesSSOAuthenticatable`
 
-Make sure configs are added to `adminpanel-sso-nodes.json`:
+The `NodesSSOProvider` is generic and requires a type that conforms to `NodesSSOAuthenticatable`. This protocol has one method that gets called when the SSO has finnished successfully:
 
-| Key            | Example value                         | Required | Description                              |
-| -------------- | ------------------------------------- | -------- | ---------------------------------------- |
-| `redirectUrl`  | `http://provider.com/sso/my-web-site` | Yes      | The url used for opening up the SSO login. |
-| `salt`         | `som3Rand0mS4lt`                      | Yes      | The salt to use for the hasher.          |
-| `loginPath`    | `/admin/sso/login`                    | No       | The project path to start the SSO flow.  |
-| `callbackPath` | `/admin/sso/callback`                 | No       | The project path after user has logged in using SSO. |
+```swift
+public static func authenticated(_ user: AuthenticatedUser, req: Request) -> Future<Response>
+```
+
+Given this `AuthenticatedUser` the implementer can then look up the `email` and create the user if it doesn't exist, or if it does, log the user in automatically.
 
 ## 🏆 Credits
 
