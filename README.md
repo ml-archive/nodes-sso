@@ -49,7 +49,7 @@ public func configure(_ config: inout Config, _ env: inout Environment, _ servic
 }
 ```
 
-There's also parameters for setting the routes that should enable SSO in your project. Have a look at the signature of `NodesSSOConfig` for more information.
+There are also parameters for setting the routes that should enable SSO in your project. Have a look at the signature of `NodesSSOConfig` for more information.
 
 ### Adding the Leaf tag
 
@@ -80,13 +80,13 @@ On the page you want the NodesSSO button to appear, embed the `sso-button` leaf 
 
 ## Conforming to `NodesSSOAuthenticatable`
 
-The `NodesSSOProvider` is generic and requires a type that conforms to `NodesSSOAuthenticatable`. This protocol has one method that gets called when the SSO is successfully done:
+The `NodesSSOProvider` is generic and requires a type that conforms to `NodesSSOAuthenticatable`. This protocol has one method that gets called when the SSO has finnished successfully:
 
 ```swift
 public static func authenticated(_ user: AuthenticatedUser, req: Request) -> Future<Response>
 ```
 
-Given this `AuthenticatedUser` the implementer can then look up the `email` and create the user if it doesn't exist, or if it does, login the user automatically.
+Given this `AuthenticatedUser` the implementer can then look up the `email` and create the user if it doesn't exist, or if it does, log the user in automatically.
 
 ## 🏆 Credits
 
