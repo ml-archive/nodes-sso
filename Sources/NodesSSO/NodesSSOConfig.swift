@@ -12,9 +12,9 @@ public struct NodesSSOConfig: Service {
 
     public init(
         projectURL: String,
-        loginPath: String,
+        loginPath: String = "/sso/login",
         redirectURL: String,
-        callbackPath: String,
+        callbackPath: String = "/sso/callback",
         salt: String,
         middlewares: [Middleware] = [],
         environment: Environment,
