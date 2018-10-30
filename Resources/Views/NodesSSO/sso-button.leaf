@@ -44,6 +44,6 @@
     }
 </style>
 
-<a href="#nodessso:config("loginPath")" id="alternative-login" class="sso">
+<a href="#nodessso:config("loginPath")?#(queryString)" id="alternative-login" class="sso">
     <span class="sr-only">Nodes SSO</span>
 </a>

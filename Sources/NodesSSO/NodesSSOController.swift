@@ -1,4 +1,5 @@
 import Crypto
+import Foundation
 import Vapor
 
 public struct AuthenticatedUser {
@@ -13,12 +14,18 @@ public protocol NodesSSOAuthenticatable {
 
 internal final class NodesSSOController<U: NodesSSOAuthenticatable> {
     internal func auth(_ req: Request) throws -> Future<Response> {
-        let config: NodesSSOConfig = try req.make()
+        let config: NodesSSOConfig<U> = try req.make()
 
         guard config.skipSSO else {
+            let redirectURL = URL(string: config.projectURL + config.callbackPath)
+            let redirectURLWithQuery = redirectURL?
+                .addQueryItems(from: req.http.url)?
+                .absoluteString ?? ""
+                .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+
             let url = config.redirectURL + "/" + config.environment.name
-                + "?redirect_url=" + config.projectURL + config.callbackPath
-        
+                + "?redirect_url=" + redirectURLWithQuery
+
             return Future.transform(to: req.redirect(to: url), on: req)
         }
 
@@ -32,7 +39,7 @@ internal final class NodesSSOController<U: NodesSSOAuthenticatable> {
     }
 
     internal func callback(_ req: Request) throws -> Future<Response> {
-        let config: NodesSSOConfig = try req.make()
+        let config: NodesSSOConfig<U> = try req.make()
 
         return try req
             .content
