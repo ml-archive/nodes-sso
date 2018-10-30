@@ -1,5 +1,5 @@
 # Nodes SSO 🔑
-[![Swift Version](https://img.shields.io/badge/Swift-4.1-brightgreen.svg)](http://swift.org)
+[![Swift Version](https://img.shields.io/badge/Swift-4.2-brightgreen.svg)](http://swift.org)
 [![Vapor Version](https://img.shields.io/badge/Vapor-3-30B6FC.svg)](http://vapor.codes)
 [![Circle CI](https://circleci.com/gh/nodes-vapor/nodes-sso/tree/master.svg?style=shield)](https://circleci.com/gh/nodes-vapor/nodes-sso)
 [![codebeat badge](https://codebeat.co/badges/406e7fbd-e288-4020-b93f-92b518d60199)](https://codebeat.co/projects/github-com-nodes-vapor-nodes-sso-master)
@@ -9,19 +9,22 @@
 
 ## 📦 Installation
 
-Update your `Package.swift` file.
+Add `NodesSSO` to the package dependencies (in your `Package.swift` file):
+```swift
+dependencies: [
+    ...,
+    .package(url: "https://github.com/nodes-vapor/nodes-sso.git", from: "1.0.0-rc")
+]
+```
+
+as well as to your target (e.g. "App"):
 
 ```swift
-.package(url: "https://github.com/nodes-vapor/nodes-sso.git", from: "1.0.0-beta")
-```
-```swift
 targets: [
+    ...
     .target(
         name: "App",
-        dependencies: [
-            ...
-            "NodesSSO"
-        ]
+        dependencies: [... "NodesSSO" ...]
     ),
     ...
 ]
@@ -32,6 +35,8 @@ Copy the `NodesSSO` folders from `Resources/Views` and `Public` from this repo a
 
 ## 🚀 Getting started
 
+First make sure that you've imported NodesSSO everywhere it's needed:
+
 ```swift
 import NodesSSO
 ```
@@ -40,7 +45,7 @@ import NodesSSO
 
 ```swift
 public func configure(_ config: inout Config, _ env: inout Environment, _ services: inout Services) throws {
-    try services.register(NodesSSOProvider<AdminPanelUser>(config: NodesSSOConfig(
+    try services.register(NodesSSOProvider<MyNodesSSOAuthenticatableUser>(config: NodesSSOConfig(
         projectURL: "https://myproject.com",
         redirectURL: "https://url-for-sso.com",
         salt: "MY-SECRET-HASH-FOR-SSO",
@@ -50,6 +55,18 @@ public func configure(_ config: inout Config, _ env: inout Environment, _ servic
 ```
 
 There are also parameters for setting the routes that should enable SSO in your project. Have a look at the signature of `NodesSSOConfig` for more information.
+
+### Adding the SSO routes
+
+Make sure to add the relevant Nodes SSO routes, e.g. in your `configure.swift` or `routes.swift`:
+
+```swift
+services.register(Router.self) { container -> EngineRouter in
+    let router = EngineRouter.default()
+    try router.useNodesSSORoutes(MyNodesSSOAuthenticatableUser.self, on: container)
+    return router
+}
+```
 
 ### Adding the Leaf tag
 
