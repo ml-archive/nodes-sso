@@ -19,7 +19,7 @@ internal final class NodesSSOController<U: NodesSSOAuthenticatable> {
         guard config.skipSSO else {
             let redirectURL = URL(string: config.projectURL + config.callbackPath)
             let redirectURLWithQuery = redirectURL?
-                .addQueryItems(from: req.http.url)?
+                .addQueryItems(from: req.http.url)
                 .absoluteString ?? ""
                 .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
 
