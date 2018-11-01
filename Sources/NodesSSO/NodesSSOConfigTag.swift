@@ -17,11 +17,9 @@ public final class NodesSSOConfigTagData: Service {
         case loginPath
     }
 
-    public var loginPath = ""
+    public let loginPath: String
 
-    init(
-        loginPath: String
-    ) {
+    init(loginPath: String) {
         self.loginPath = loginPath
     }
 
