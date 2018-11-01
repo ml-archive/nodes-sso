@@ -1,14 +1,15 @@
 import Vapor
 
-public struct NodesSSOConfig: Service {
-    let projectURL: String
-    let loginPath: String
-    let redirectURL: String
-    let callbackPath: String
-    let salt: String
-    let middlewares: [Middleware]
-    let environment: Environment
-    let skipSSO: Bool
+public struct NodesSSOConfig<U: NodesSSOAuthenticatable>: Service {
+    internal let projectURL: String
+    internal let loginPath: String
+    internal let redirectURL: String
+    internal let callbackPath: String
+    internal let salt: String
+    internal let middlewares: [Middleware]
+    internal let environment: Environment
+    internal let skipSSO: Bool
+    internal let controller: NodesSSOController<U>
 
     public init(
         projectURL: String,
@@ -28,5 +29,6 @@ public struct NodesSSOConfig: Service {
         self.middlewares = middlewares
         self.environment = environment
         self.skipSSO = skipSSO
+        self.controller = NodesSSOController()
     }
 }
