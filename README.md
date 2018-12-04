@@ -1,5 +1,5 @@
 # Nodes SSO 🔑
-[![Swift Version](https://img.shields.io/badge/Swift-4.2-brightgreen.svg)](http://swift.org)
+[![Swift Version](https://img.shields.io/badge/Swift-4.1-brightgreen.svg)](http://swift.org)
 [![Vapor Version](https://img.shields.io/badge/Vapor-3-30B6FC.svg)](http://vapor.codes)
 [![Circle CI](https://circleci.com/gh/nodes-vapor/nodes-sso/tree/master.svg?style=shield)](https://circleci.com/gh/nodes-vapor/nodes-sso)
 [![codebeat badge](https://codebeat.co/badges/406e7fbd-e288-4020-b93f-92b518d60199)](https://codebeat.co/projects/github-com-nodes-vapor-nodes-sso-master)
