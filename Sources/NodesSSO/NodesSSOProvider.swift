@@ -1,5 +1,4 @@
 import Leaf
-import Sugar
 import Vapor
 
 public final class NodesSSOProvider<U: NodesSSOAuthenticatable>: Provider {
@@ -10,15 +9,11 @@ public final class NodesSSOProvider<U: NodesSSOAuthenticatable>: Provider {
     }
 
     public func register(_ services: inout Services) throws {
-        try services.register(MutableLeafTagConfigProvider())
         services.register(config)
         services.register(NodesSSOConfigTagData(loginPath: config.loginPath))
     }
 
     public func didBoot(_ container: Container) throws -> EventLoopFuture<Void> {
-        let tags: MutableLeafTagConfig = try container.make()
-        tags.use(NodesSSOConfigTag(), as: "nodessso:config")
-
         return .done(on: container)
     }
 }
@@ -35,5 +30,11 @@ public extension Router {
             group.get(config.loginPath, use: controller.auth)
             group.post(config.callbackPath, use: controller.callback)
         }
+    }
+}
+
+public extension LeafTagConfig {
+    public mutating func useNodesSSOLeafTags() {
+        use(NodesSSOConfigTag(), as: "nodessso:config")
     }
 }
