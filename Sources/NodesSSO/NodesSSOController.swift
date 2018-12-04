@@ -1,5 +1,6 @@
 import Crypto
 import Foundation
+import Sugar
 import Vapor
 
 public struct AuthenticatedUser {

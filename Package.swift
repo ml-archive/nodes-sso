@@ -7,10 +7,11 @@ let package = Package(
         .library(name: "NodesSSO", targets: ["NodesSSO"]),
     ],
     dependencies: [
+        .package(url: "https://github.com/nodes-vapor/sugar.git", from: "3.0.0"),
         .package(url: "https://github.com/vapor/vapor.git", from: "3.0.0"),
     ],
     targets: [
-        .target(name: "NodesSSO", dependencies: ["Vapor"]),
+        .target(name: "NodesSSO", dependencies: ["Sugar", "Vapor"]),
         .testTarget(name: "NodesSSOTests", dependencies: ["NodesSSO"]),
     ]
 )
