@@ -8,10 +8,9 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/vapor/vapor.git", from: "3.0.0"),
-        .package(url: "https://github.com/nodes-vapor/sugar.git", from: "3.0.0-beta"),
     ],
     targets: [
-        .target(name: "NodesSSO", dependencies: ["Vapor", "Sugar"]),
+        .target(name: "NodesSSO", dependencies: ["Vapor"]),
         .testTarget(name: "NodesSSOTests", dependencies: ["NodesSSO"]),
     ]
 )
