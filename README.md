@@ -70,19 +70,13 @@ services.register(Router.self) { container -> EngineRouter in
 
 ### Adding the Leaf tag
 
-#### Using a shared Leaf tag config
-
-This package supports using a shared Leaf tag config which removes the task of registering the tags from the consumer of this package. Please see [this description](https://github.com/nodes-vapor/sugar#mutable-leaf-tag-config) if you want to use this.
-
-#### Manually registering the Leaf tag(s)
-
 In order to render embed the SSO button, you will need to add the NodesSSO Leaf tag:
 
 ```swift
 public func configure(_ config: inout Config, _ env: inout Environment, _ services: inout Services) throws {
     services.register { _ -> LeafTagConfig in
         var tags = LeafTagConfig.default()
-        tags.use(NodesSSOConfigTag(), as: "nodessso:config")
+        tags.useNodesSSOLeafTags()
         return tags
     }
 }
