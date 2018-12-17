@@ -13,7 +13,7 @@ public final class NodesSSOProvider<U: NodesSSOAuthenticatable>: Provider {
         services.register(NodesSSOConfigTagData(loginPath: config.loginPath))
     }
 
-    public func didBoot(_ container: Container) throws -> EventLoopFuture<Void> {
+    public func didBoot(_ container: Container) throws -> Future<Void> {
         return .done(on: container)
     }
 }
