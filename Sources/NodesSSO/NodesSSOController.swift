@@ -27,7 +27,7 @@ internal final class NodesSSOController<U: NodesSSOAuthenticatable> {
             let url = config.redirectURL + "/" + config.environment.name
                 + "?redirect_url=" + redirectURLWithQuery
 
-            return Future.transform(to: req.redirect(to: url), on: req)
+            return req.future(req.redirect(to: url))
         }
 
         // Bypassing SSO
@@ -53,7 +53,7 @@ internal final class NodesSSOController<U: NodesSSOAuthenticatable> {
                     throw Abort(.unauthorized)
                 }
             }
-            .flatMap(to: Response.self) { callback in
+            .flatMap { callback in
                 let user = AuthenticatedUser(
                     email: callback.email,
                     name: callback.name,
