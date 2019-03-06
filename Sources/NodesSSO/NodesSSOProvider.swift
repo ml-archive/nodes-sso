@@ -2,15 +2,18 @@ import Leaf
 import Vapor
 
 public final class NodesSSOProvider<U: NodesSSOAuthenticatable>: Provider {
-    private let config: NodesSSOConfig<U>
+    private let configFactory: (Container) throws -> NodesSSOConfig<U>
 
-    public init(config: NodesSSOConfig<U>) {
-        self.config = config
+    public init(configFactory: @escaping (Container) throws -> NodesSSOConfig<U>) {
+        self.configFactory = configFactory
     }
 
     public func register(_ services: inout Services) throws {
-        services.register(config)
-        services.register(NodesSSOConfigTagData(loginPath: config.loginPath))
+        services.register(factory: configFactory)
+        services.register { container -> NodesSSOConfigTagData in
+            let config: NodesSSOConfig<U> = try container.make()
+            return NodesSSOConfigTagData(loginPath: config.loginPath)
+        }
     }
 
     public func didBoot(_ container: Container) throws -> Future<Void> {
