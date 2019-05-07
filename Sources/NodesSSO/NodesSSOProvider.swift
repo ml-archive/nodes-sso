@@ -22,7 +22,7 @@ public final class NodesSSOProvider<U: NodesSSOAuthenticatable>: Provider {
 }
 
 public extension Router {
-    public func useNodesSSORoutes<U: NodesSSOAuthenticatable>(
+    func useNodesSSORoutes<U: NodesSSOAuthenticatable>(
         _ type: U.Type,
         on container: Container
     ) throws {
@@ -37,7 +37,7 @@ public extension Router {
 }
 
 public extension LeafTagConfig {
-    public mutating func useNodesSSOLeafTags() {
+    mutating func useNodesSSOLeafTags() {
         use(NodesSSOConfigTag(), as: "nodessso:config")
     }
 }
