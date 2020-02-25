@@ -13,7 +13,7 @@ Add `NodesSSO` to the package dependencies (in your `Package.swift` file):
 ```swift
 dependencies: [
     ...,
-    .package(url: "https://github.com/nodes-vapor/nodes-sso.git", from: "1.0.0-rc")
+    .package(url: "https://github.com/nodes-vapor/nodes-sso.git", from: "1.0.0")
 ]
 ```
 
@@ -102,7 +102,6 @@ Given this `AuthenticatedUser` the implementer can then look up the `email` and 
 ## 🏆 Credits
 
 This package is developed and maintained by the Vapor team at [Nodes](https://www.nodes.dk).
-The package owner for this project is [Steffen](https://github.com/steffendsommer).
 
 ## 📄 License
 
